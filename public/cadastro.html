@@ -1,0 +1,128 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+
+<head>
+    <meta charset="utf-8">
+    <title>Cadastro</title>
+
+    <link rel="stylesheet" href="./css/style.css">
+    <link rel="shortcut icon" href="./assets/icon.png" type="image/x-icon" />
+</head>
+
+<body background="./assets/cadastro.png">
+
+    <nav>
+        <ul>
+            <li><a href="index.html#page-top"><b>森<br>田</b></a></li>
+            <li><a href="login.html">LOGIN</a></li>
+
+        </ul>
+    </nav>
+
+    <div class="container">
+        <div class="card_erro" id="cardErro">
+            <span id="mensagem_erro"></span>
+        </div>
+        <div class="form">
+            <h2>CADASTRO</h2>
+            <div class="form-group">
+                <label>Nome:</label>
+                <input type="email" id="nomeUsuario">
+            </div>
+            <div class="form-group">
+                <label>Email:</label>
+                <input type="email" id="email">
+            </div>
+            <div class="form-group">
+                <label>Senha:</label>
+                <input type="password" id="password">
+            </div>
+            <div class="form-group">
+                <label> Confirmar senha:</label>
+                <input type="password" id="txtSenha_confirmation">
+            </div>
+            <div class="form-group">
+                <label> Gênero</label>
+                <select  name="genero" id="listarGenero">
+                    <option value="#">Selecione</option>
+                        <option value="Masc">Masculino</option>
+                        <option value="Fem">Feminino</option>
+                        <option value="ou">Outro</option>
+                   
+                </select>
+            </div>
+            <button class="btn-login" onclick="cadastrar()">CADASTRAR</button>
+        </div>
+    </div>
+
+    <footer>
+        <p>Anne Morita &copy; AMORITATTOO</p>
+    </footer>
+
+</body>
+
+</html>
+
+<script>
+    function cadastrar() {
+        var nomeVar = nomeUsuario.value;
+        var emailVar = email.value;
+        var senhaVar = password.value;
+        var confirmacaoSenhaVar = txtSenha_confirmation.value;
+        if (
+            nomeVar == "" ||
+            emailVar == "" ||
+            senhaVar == "" ||
+            confirmacaoSenhaVar == ""
+        ) {
+
+
+            alert("Mensagem de erro para todos os campos em branco");
+
+
+            return false;
+        } else {
+
+            fetch("/usuarios/cadastrar", {
+                method: "POST",
+                headers: {
+                    "Content-Type": "application/json",
+                },
+                body: JSON.stringify({
+                    // crie um atributo que recebe o valor recuperado aqui
+                    // Agora vá para o arquivo routes/usuario.js
+                    nomeServer: nomeVar,
+                    emailServer: emailVar,
+                    senhaServer: senhaVar,
+
+                }),
+            })
+                .then(function (resposta) {
+                    console.log("resposta: ", resposta);
+
+                    if (resposta.ok) {
+
+
+                        setTimeout(() => {
+                            window.location = "login.html";
+                        }, "2000");
+
+
+                    } else {
+                        throw "Houve um erro ao tentar realizar o cadastro!";
+                    }
+                })
+                .catch(function (resposta) {
+                    console.log(`#ERRO: ${resposta}`);
+
+                });
+
+            return false;
+        }
+
+    }
+
+ 
+
+
+</script>

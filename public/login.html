@@ -1,0 +1,124 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+
+<head>
+    <meta charset="utf-8">
+    <title>Login</title>
+    <link href='https://fonts.googleapis.com/css?family=Open+Sans:400,700|Roboto+Slab:400,700|Pacifico' rel='stylesheet'
+        type='text/css'>
+    <link rel="stylesheet" href="./css/style.css">
+    <link rel="shortcut icon" href="./assets/icon.png" type="image/x-icon" />
+</head>
+
+<body background="./assets/login.png" >
+
+    <nav>
+        <ul>
+            <li><a href="index.html#page-top"><b>森<br>田</b></a></li>
+
+            <li><a href="cadastro.html">CADASTRE-SE</a></li>
+        </ul>
+    </nav>
+
+    <div class="container">
+        <div class="form">
+            <h2>LOGIN</h2>
+            <div class="form-group">
+                <label for="email">Email:</label>
+                <input type="email" id="email_input" required>
+            </div>
+            <div class="form-group">
+                <label for="password">Senha:</label>
+                <input type="password" id="password_input" required>
+            </div>
+            <button type="submit" class="btn-login" onclick="login()">ENTRAR</button>
+        </div>
+    </div>
+
+    <footer>
+        <p>Anne Morita &copy; AMORITATTOO</p>
+    </footer>
+
+</body>
+
+</html>
+
+
+
+<script>
+    function login() {
+        let emailVar = email_input.value;
+        let senhaVar = password_input.value;
+
+        if (
+            emailVar == "" ||
+            senhaVar == ""
+
+        ) {
+
+
+            alert("Mensagem de erro para todos os campos em branco");
+
+
+            return false;
+        }
+
+
+        if (emailVar == "" || senhaVar == "") {
+            cardErro.style.display = "block"
+            mensagem_erro.innerHTML = "(Mensagem de erro para todos os campos em branco)";
+            finalizarAguardar();
+            return false;
+        }
+
+
+        console.log("FORM LOGIN: ", emailVar);
+        console.log("FORM SENHA: ", senhaVar);
+
+        fetch("/usuarios/autenticar", {
+            method: "POST",
+            headers: {
+                "Content-Type": "application/json"
+            },
+            body: JSON.stringify({
+                emailServer: emailVar,
+                senhaServer: senhaVar
+            })
+        }).then(function (resposta) {
+            console.log("ESTOU NO THEN DO entrar()!")
+
+            if (resposta.ok) {
+                console.log(resposta);
+
+                resposta.json().then(json => {
+                    console.log(json);
+                    console.log(JSON.stringify(json));
+                    sessionStorage.EMAIL_USUARIO = json.email;
+                    sessionStorage.NOME_USUARIO = json.nome;
+                    sessionStorage.ID_USUARIO = json.id;
+
+
+                    setTimeout(function () {
+                        window.location = "dashboard.html";
+                    }, 1000); // apenas para exibir o loading
+
+                });
+
+            } else {
+
+                console.log("Houve um erro ao tentar realizar o login!");
+
+                resposta.text().then(texto => {
+                    console.error(texto);
+
+                });
+            }
+
+        }).catch(function (erro) {
+            console.log(erro);
+        })
+
+        return false;
+
+    }
+</script>

@@ -1,0 +1,209 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+
+<head>
+    <meta charset="utf-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>QUIZ</title>
+
+    <link rel="stylesheet" href="./css/style.css">
+    <link rel="shortcut icon" href="./assets/icon.png" type="image/x-icon" />
+</head>
+
+<body background="./assets/login.png">
+
+    <nav>
+        <ul>
+            <li><a href="index.html#page-top"><b>森<br>田</b></a></li>
+            <li><a href="login.html">LOGIN</a></li>
+        </ul>
+    </nav>
+
+    <div class="container">
+        <div class="card_erro" id="cardErro">
+            <span id="mensagem_erro"></span>
+        </div>
+        <div class="form">
+            <h2>quiz de curiosidades sobre o estilo oriental</h2>
+            <main>
+                <div class="content">
+                    <span id="QtdPontos"></span>
+                    <span id="question"></span>
+                    <div class="answers"  id="answers"></div>
+                </div>
+                <div class="finish">
+                    <span> </span>
+                    <button class="btn-login" >reiniciar</button> <br> <br>
+                </div>
+            </main>
+
+         
+        </div>
+    </div>
+
+    <footer>
+        <p>Anne Morita &copy; AMORITATTOO</p>
+    </footer>
+
+</body>
+
+<script>
+    const question = document.querySelector("#question");
+    const answers = document.querySelector("#answers");
+    const QtdPontos = document.querySelector("#QtdPontos");
+    const textFinish = document.querySelector(".finish span");
+    const content = document.querySelector(".content");
+    const contentFinish = document.querySelector(".finish");
+    const btnRestart = document.querySelector(".finish button");
+
+    // Declaração da variável questions antes do uso dela
+    const questions = [
+        {
+            question: "Qual dos elementos não faz parte das tatuagens de estilo oriental?",
+            answers: [
+                { option: "deuses e deidades", correct: false },
+                { option: "gueixa", correct: false },
+                { option: "bonsai", correct: false },
+                { option: "anjo", correct: true }
+            ]
+        },
+        {
+            question: "Qual é o nome dado às tatuagens tradicionais japonesas que cobrem grandes áreas do corpo?",
+            answers: [
+                { option: "Irezumi", correct: true },
+                { option: "Tebori", correct: false },
+                { option: "Koi", correct: false },
+                { option: "Ukiyo-e", correct: false }
+            ]
+        },
+        {
+            question: "Durante qual período histórico as tatuagens japonesas se tornaram associadas a práticas penais?",
+            answers: [
+                { option: "Período Jomon", correct: false },
+                { option: "Período Yayoi", correct: false },
+                { option: "Período Kofun", correct: true },
+                { option: "Período Asuka", correct: false }
+            ]
+        },
+        {
+            question: "Qual é a técnica tradicional de tatuagem japonesa que usa varas de bambu ou metal para inserir tinta na pele?",
+            answers: [
+                { option: "Irezumi", correct: false },
+                { option: "Tebori", correct: true },
+                { option: "Sumi-e", correct: false },
+                { option: "Shodo", correct: false }
+            ]
+        },
+        {
+            question: "Qual artista de ukiyo-e teve uma influência significativa nos desenhos de tatuagem tradicional japonesa?",
+            answers: [
+                { option: "Hokusai", correct: false },
+                { option: "Kuniyoshi", correct: true },
+                { option: "Utamaro", correct: false },
+                { option: "Hiroshige", correct: false }
+            ]
+        },
+        {
+            question: "Qual é o significado do Neko nas tatuagens japonesas?",
+            answers: [
+                { option: "cachorro", correct: false },
+                { option: "gato", correct: true },
+                { option: "dragão", correct: false },
+                { option: "sapo", correct: false }
+            ]
+        },
+        {
+            question: "Quem é Fudo Myoo nas tatuagens orientais?",
+            answers: [
+                { option: "Um samurai lendário", correct: false },
+                { option: "Um deus da sorte", correct: false },
+                { option: "Um protetor budista", correct: true },
+                { option: "Um demônio marinho", correct: false }
+            ]
+        },
+        {
+            question: "O que o Daruma representa nas tatuagens japonesas?",
+            answers: [
+                { option: "Proteção contra o mal", correct: false },
+                { option: "Boa sorte e perseverança", correct: true },
+                { option: "Sabedoria e conhecimento", correct: false },
+                { option: "Fortuna e riqueza", correct: false }
+            ]
+        },
+        {
+            question: "O que representa o Hannya nas tatuagens japonesas?",
+            answers: [
+                { option: "Demônio feminino vingativo", correct: true },
+                { option: "Deus da Fortuna", correct: false },
+                { option: "Espírito protetor", correct: false },
+                { option: "Deusa da Misericórdia", correct: false }
+            ]
+        },
+        {
+            question: "Qual é o significado do Sakura nas tatuagens japonesas?",
+            answers: [
+                { option: "tigre", correct: false },
+                { option: "leão", correct: false },
+                { option: "flor de cerejeira", correct: true },
+                { option: "carpa", correct: false }
+            ]
+        }
+    ];
+
+    let currentIndex = 0;
+    let questionsCorrect = 0;
+
+    btnRestart.onclick = () => {
+        content.style.display = "flex";
+        contentFinish.style.display = "none";
+
+        currentIndex = 0;
+        questionsCorrect = 0;
+        loadQuestion();
+    };
+
+    function nextQuestion(e) {
+        if (e.target.getAttribute("data-correct") == "true") {
+            questionsCorrect++;
+        }
+        if (currentIndex < questions.length - 1) {
+            currentIndex++;
+            loadQuestion();
+        } else {
+            finish();
+        }
+    }
+
+    function finish() {
+        textFinish.innerHTML = `você acertou ${questionsCorrect} de ${questions.length}`;
+        content.style.display = "none";
+        contentFinish.style.display = "flex";
+    }
+
+    function loadQuestion() {
+        QtdPontos.innerHTML = `${currentIndex + 1}/${questions.length}`;
+        const item = questions[currentIndex];
+        answers.innerHTML = "";
+        question.innerHTML = item.question;
+
+        item.answers.forEach((answer) => {
+            const div = document.createElement("div");
+
+            div.innerHTML =
+                `<button class="answer" data-correct="${answer.correct}">
+                ${answer.option}
+                </button>`;
+
+            answers.appendChild(div);
+        });
+
+        document.querySelectorAll(".answer").forEach((item) => {
+            item.addEventListener("click", nextQuestion);
+        });
+    }
+
+    loadQuestion();
+</script>
+
+</html>
