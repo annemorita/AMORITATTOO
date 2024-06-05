@@ -8,34 +8,32 @@ CREATE TABLE usuario (
     email VARCHAR(45),
     senha VARCHAR(45),
     genero VARCHAR(45));
-
-CREATE TABLE quiz (
+    
+    create table quiz (
 idquiz int primary key auto_increment,
-fkusuario int,
-foreign key (fkusuario) references usuario(id),
-fktatuagem int,
-foreign key (fktatuagem) references tatuagem(idtatuagem),
-data DATETIME)auto_increment=100;
-
-CREATE TABLE tatuagem (
-idtatuagem INT primary key auto_increment,
-tipo varchar(800),
-motivo varchar(45),
-local_do_corpo varchar(45)
+data date
 )auto_increment=10;
 
+CREATE TABLE resultado (
+idresultado int primary key auto_increment,
+fkusuario int,
+foreign key (fkusuario) references usuario(id),
+fkquiz int,
+foreign key (fkquiz) references quiz(idquiz),
+data DATETIME,
+acertos int
+)auto_increment=100;
 
-ALTER TABLE tatuagem
-ADD CONSTRAINT chk_local_do_corpo CHECK (local_do_corpo IN ('braço', 'perna', 'peito', 'costas', 'barriga', 'coxa'));
 
-ALTER TABLE tatuagem
-ADD CONSTRAINT chk_motivo CHECK (motivo IN ('Expressão artística', 'Moda e auto estima', 'Gosto da cultura japonesa', 'Outro'));
+
 
     ALTER TABLE usuario
 ADD CONSTRAINT chk_genero CHECK (genero IN ('feminino', 'masculino', 'outros'));
 
-select*from tatuagem;
+select*from resultado;
 select*from usuario;
 select*from quiz;
+
+
 
 

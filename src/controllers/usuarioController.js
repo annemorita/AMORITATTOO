@@ -50,6 +50,7 @@ function cadastrar(req, res) {
     var nome = req.body.nomeServer;
     var email = req.body.emailServer;
     var senha = req.body.senhaServer;
+    var genero = req.body.generoServer;
    
 
     // Faça as validações dos valores
@@ -59,10 +60,12 @@ function cadastrar(req, res) {
         res.status(400).send("Seu email está undefined!");
     } else if (senha == undefined) {
         res.status(400).send("Sua senha está undefined!");
+    }else if (genero == undefined) {
+        res.status(400).send("Seu genero está undefined!");
     } else {
 
         // Passe os valores como parâmetro e vá para o arquivo usuarioModel.js
-        usuarioModel.cadastrar(nome, email, senha)
+        usuarioModel.cadastrar(nome, email, senha, genero)
             .then(
                 function (resultado) {
                     res.json(resultado);
@@ -80,7 +83,78 @@ function cadastrar(req, res) {
     }
 }
 
+function quiz(req, res) {
+    // Crie uma variável que vá recuperar os valores do arquivo cadastro.html
+    var questoes = req.body.questoesServer;
+    var idusuario = req.body.idServer;
+  
+   
+
+    // Faça as validações dos valores
+    if (questoes == undefined) {
+        res.status(400).send("Seu nome está undefined!");
+    } 
+   else if(idusuario == undefined){
+    res.status(400).send("Seu id está undefined!");
+   }
+    else {
+
+        // Passe os valores como parâmetro e vá para o arquivo usuarioModel.js
+        usuarioModel.quiz(questoes, idusuario)
+            .then(
+                function (resultado) {
+                    res.json(resultado);
+                }
+            ).catch(
+                function (erro) {
+                    console.log(erro);
+                    console.log(
+                        "\nHouve um erro ao salvar dados! Erro: ",
+                        erro.sqlMessage
+                    );
+                    res.status(500).json(erro.sqlMessage);
+                }
+            );
+    }
+}
+
+
+function dadosGenero(req, res) {
+    usuarioModel.dadosGenero()
+        .then(function (resultado) {
+            res.json(resultado);
+        })
+        .catch(function (erro) {
+            console.log(erro);
+            console.log("\nHouve um erro ao realizar o genero! Erro: ", erro.sqlMessage);
+            res.status(500).json(erro.sqlMessage);
+        });
+}
+
+function dadosQuiz(req, res) {
+    var idusuario = req.params.idusuario;
+
+    if (idusuario == undefined) {
+        res.status(400).send("Seu id está undefined!");
+    } else {
+        usuarioModel.dadosQuiz(idusuario)
+            .then(function (resultado) {
+                res.json(resultado);
+            })
+            .catch(function (erro) {
+                console.log(erro);
+                console.log("\nHouve um erro ao realizar o quiz! Erro: ", erro.sqlMessage);
+                res.status(500).json(erro.sqlMessage);
+            });
+    }
+}
+
+
 module.exports = {
     autenticar,
-    cadastrar
-}
+    cadastrar,
+    quiz,
+    dadosGenero,
+    dadosQuiz,
+    
+};

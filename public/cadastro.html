@@ -45,9 +45,9 @@
                 <label> Gênero</label>
                 <select  name="genero" id="listarGenero">
                     <option value="#">Selecione</option>
-                        <option value="Masc">Masculino</option>
-                        <option value="Fem">Feminino</option>
-                        <option value="ou">Outro</option>
+                        <option value="masculino">Masculino</option>
+                        <option value="feminino">Feminino</option>
+                        <option value="outros">Outro</option>
                    
                 </select>
             </div>
@@ -68,6 +68,7 @@
         var nomeVar = nomeUsuario.value;
         var emailVar = email.value;
         var senhaVar = password.value;
+        var generoVar = listarGenero.value;
         var confirmacaoSenhaVar = txtSenha_confirmation.value;
         if (
             nomeVar == "" ||
@@ -94,6 +95,7 @@
                     nomeServer: nomeVar,
                     emailServer: emailVar,
                     senhaServer: senhaVar,
+                    generoServer: generoVar
 
                 }),
             })

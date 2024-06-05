@@ -11,7 +11,7 @@
     <link rel="shortcut icon" href="./assets/icon.png" type="image/x-icon" />
 </head>
 
-<body background="./assets/login.png">
+<body background="./assets/quiz.jpg">
 
     <nav>
         <ul>
@@ -24,21 +24,20 @@
         <div class="card_erro" id="cardErro">
             <span id="mensagem_erro"></span>
         </div>
-        <div class="form">
+        <div class="form1">
             <h2>quiz de curiosidades sobre o estilo oriental</h2>
             <main>
                 <div class="content">
                     <span id="QtdPontos"></span>
-                    <span id="question"></span>
-                    <div class="answers"  id="answers"></div>
+                    <span id="question" class="perguntas"></span> <br> <br>
+                    <div class="botaoQuiz" id="answers"></div>
                 </div>
                 <div class="finish">
-                    <span> </span>
-                    <button class="btn-login" >reiniciar</button> <br> <br>
+                    <span> </span> <br> <br>
+                    <button id="button" class="btn-reiniciar" onclick="reiniciar()">reiniciar</button> <br> <br>
+                    <button id="button2" class="btn-reiniciar" onclick="salvar()">finalizar</button> 
                 </div>
             </main>
-
-         
         </div>
     </div>
 
@@ -56,6 +55,8 @@
     const content = document.querySelector(".content");
     const contentFinish = document.querySelector(".finish");
     const btnRestart = document.querySelector(".finish button");
+    const buttonfinal = document.querySelector("#button")
+    const buttonfinal2 = document.querySelector("#button2")
 
     // Declaração da variável questions antes do uso dela
     const questions = [
@@ -154,14 +155,14 @@
     let currentIndex = 0;
     let questionsCorrect = 0;
 
-    btnRestart.onclick = () => {
-        content.style.display = "flex";
-        contentFinish.style.display = "none";
+    // btnRestart.onclick = () => {
+    //     content.style.display = "flex";
+    //     contentFinish.style.display = "none";
 
-        currentIndex = 0;
-        questionsCorrect = 0;
-        loadQuestion();
-    };
+    //     currentIndex = 0;
+    //     questionsCorrect = 0;
+    //     loadQuestion();
+    // };
 
     function nextQuestion(e) {
         if (e.target.getAttribute("data-correct") == "true") {
@@ -176,13 +177,16 @@
     }
 
     function finish() {
-        textFinish.innerHTML = `você acertou ${questionsCorrect} de ${questions.length}`;
+       
+        textFinish.innerHTML = `<b>você acertou ${questionsCorrect} de ${questions.length}</b>`;
         content.style.display = "none";
         contentFinish.style.display = "flex";
+        buttonfinal.style.display="flex";
+        buttonfinal2.style.display="flex";
     }
 
     function loadQuestion() {
-        QtdPontos.innerHTML = `${currentIndex + 1}/${questions.length}`;
+        QtdPontos.innerHTML = `<b>${currentIndex + 1}/${questions.length}</b>`;
         const item = questions[currentIndex];
         answers.innerHTML = "";
         question.innerHTML = item.question;
@@ -204,6 +208,44 @@
     }
 
     loadQuestion();
+
+    function reiniciar() {
+        window.location = 'quiz.html'
+    }
+
+    
+
+    function salvar(){
+        window.location = 'dash.html'
+
+        fetch("/usuarios/quiz", {
+                method: "POST",
+                headers: {
+                    "Content-Type": "application/json",
+                },
+                body: JSON.stringify({
+               
+                    questoesServer: questionsCorrect, 
+                    idServer: sessionStorage.ID_USUARIO,
+
+                }),
+            })
+                .then(function (resposta) {
+                    console.log("resposta: ", resposta);
+
+                    if (resposta.ok) {
+
+                    } else {
+                        throw "Houve um erro ao salvar os dados!";
+                    }
+                })
+                .catch(function (resposta) {
+                    console.log(`#ERRO: ${resposta}`);
+
+                });
+                console.log(questionsCorrect)
+            return false;   
+    }
 </script>
 
 </html>

@@ -26,7 +26,14 @@ p {
 
 S h1,
 h2,
-h3 {
+h3
+ {
+  margin: 0;
+  font-family: "Libre Bodoni";
+  font-weight: 700;
+}
+
+.perguntas {
   margin: 0;
   font-family: "Libre Bodoni";
   font-weight: 700;
@@ -57,6 +64,19 @@ nav {
   width: 100%;
   top: 0;
   z-index: 1000;
+}
+
+.nav1 {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  background-color: #f67855;
+  position: fixed;
+  /* Fixar a navegação no topo */
+  width: 100%;
+  /* top: 0; */
+  z-index: 1000;
+  border-radius: 5px;
 }
 
 nav>a {
@@ -194,7 +214,7 @@ FOOTER
 footer {
   text-align: center;
   padding: 10px;
-  background-color: #f67855;
+  background-color:#f67855 ;
   color: #f1f1f1;
 }
 
@@ -231,6 +251,58 @@ LOGIN E CADASTRO
 
 }
 
+.form1 {
+  background-color: #ffffff;
+  padding: 20px;
+  border-radius: 8px;
+  box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+  text-align: center;
+  width: 300px;
+  font-family: "Libre Bodoni";
+  margin-top: 95px;
+  color: #000000;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  flex-direction: column;
+}
+
+.form2 {
+  background-color: #ffffff91;
+  padding: 20px;
+  border-radius: 8px;
+  box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+  text-align: center;
+  width: 850px;
+  height: 500px;
+  font-family: "Libre Bodoni";
+  margin-top: 95px;
+  color: #000000;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+ 
+}
+
+.grafico{
+ display: flex;
+ width: 400px;
+ justify-content: center;
+ align-items: center;
+ margin-right: 100px;
+
+}
+
+.grafico2{
+  display: flex;
+  width: 400px;
+  justify-content: center;
+  align-items: center;
+  margin-bottom: 20px;
+  flex-direction: column;
+  margin-top: 30px;
+ }
+
 .form h2 {
   margin-bottom: 20px;
   font-family: "Libre Bodoni";
@@ -266,7 +338,22 @@ LOGIN E CADASTRO
   transition: background-color 0.3s;
 }
 
+.links {
+  text-decoration: none;
+  color: #f67855;
+  font-size: 50px;
+}
 
+.btn-reiniciar{
+  background-color: #f67855;
+  color: white;
+  padding: 10px 20px;
+  border: none;
+  border-radius: 5px;
+  cursor: pointer;
+  transition: background-color 0.3s;
+  display: none;
+}
 
 .btn-login:hover {
   background-color: #eea794;
@@ -306,6 +393,8 @@ MEDIA QUERIES
 
 
 }
+
+
 
 .box {
   justify-content: center;
@@ -550,17 +639,28 @@ MEDIA QUERIES
   transform: rotate(0deg);
 }
 
-body h2 {
-  color: #000000;
-}
 
-button {
-  width: 100%;
+
+.botaoQuiz button{
+  width: 50%;
   text-align: start;
   padding: 5px;
   border: none;
   border-radius: 5px;
   cursor: pointer;
-  background-color: #f67855;
-  color: #ffffff;
+  background-color: #00000073;
+  color:#ffffff;
+  margin-top: 6px;
+  text-align: center;
+}
+
+.finish,
+.finish span
+#QtdPontos{
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  flex-direction: column;
+  font-family:"Libre Bodoni";
+  margin-top: 10px;
 }

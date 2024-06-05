@@ -1,17 +1,211 @@
 <!DOCTYPE html>
-<html lang="en">
+<html lang="pt-BR">
+
 <head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>AMORITATTOO</title>
+    <meta charset="utf-8">
+    <title>Login</title>
+    <link href='https://fonts.googleapis.com/css?family=Open+Sans:400,700|Roboto+Slab:400,700|Pacifico' rel='stylesheet'
+        type='text/css'>
+    <link rel="stylesheet" href="./css/style.css">
+    <link rel="shortcut icon" href="./assets/icon.png" type="image/x-icon" />
+    <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
 </head>
-<body>
-    
+
+<body onload="dadosQuiz();" background="./assets/dash.jpg">
+
+    <nav class="nav1">
+        <ul>
+            <li><a href="index.html#page-top"><b>森<br>田</b></a></li>
+
+            <li><a href="cadastro.html">HISTÓRIA</a></li>
+
+            <li><a href="quiz.html">QUIZ</a></li>
+
+        </ul>
+    </nav>
+
+    <div class="container">
+        <div class="form2">
+            <div class="grafico">
+                <canvas id="myChart"></canvas>
+            </div>
+
+            <div class="grafico2">
+              
+                <div  class="KPI">
+                    <p id="KPI"></p>
+                </div>
+                <canvas id="myChart2"></canvas>
+            </div>
+            
+        </div>
+    </div>
+
+    <footer>
+        <p>Anne Morita &copy; AMORITATTOO</p>
+    </footer>
+
+    <script>
+        const labels = ['masculino', 'feminino', 'outros'];
+
+        const data = {
+            labels: labels,
+            datasets: [{
+                label: 'Interessados em fazer tatuagem oriental:',
+                data: [10, 20, 30],
+                backgroundColor: [
+                    'rgba(0, 0, 0)',
+                    'rgba(255, 255, 255)',
+                    'rgba(246, 120, 85)'
+                ],
+                borderWidth: 1,
+                borderColor: 'rgba(0, 0, 0, 0.8)'
+            }]
+        };
+
+        const config = {
+            type: 'pie',
+            data: data,
+            options: {
+                plugins: {
+                    title: {
+                        display: true,
+                        text: 'Interessados em Tatuagem Oriental'
+                    }
+                },
+                scales: {
+                    y: {
+                        beginAtZero: true
+                    }
+                }
+            }
+        };
+
+        const myPieChart = new Chart(
+            document.getElementById('myChart'),
+            config
+        );
+    </script>
+
+    <script>
+        const labels2 = ['erros', 'acertos'];
+
+        const data2 = {
+            labels: labels2,
+            datasets: [{
+                label: 'QUIZ',
+                data: [],
+                backgroundColor: [
+                    'rgba(0, 0, 0)',
+                    'rgba(255, 255, 255)',
+                    'rgba(246, 120, 85)'
+                ],
+                borderWidth: 1,
+                borderColor: 'rgba(0, 0, 0, 0.8)'
+            }]
+        };
+
+        const config2 = {
+            type: 'bar',
+            data: data2,
+            options: {
+                plugins: {
+                    title: {
+                        display: true,
+                        text: 'Resultados do Quiz'
+                    }
+                },
+                scales: {
+                    y: {
+                        beginAtZero: true
+                    }
+                }
+            }
+        };
+
+        const myBarChart = new Chart(
+            document.getElementById('myChart2'),
+            config2
+        );
+
+        function dadosGenero() {
+            fetch("/usuarios/dadosGenero", {
+                method: "GET",
+                headers: {
+                    "Content-Type": "application/json",
+                }
+            })
+                .then(function (resposta) {
+                    if (resposta.ok) {
+                        return resposta.json();
+                    } else {
+                        throw "Houve um erro ao tentar realizar a captura do genero";
+                    }
+                })
+                .then(function (data) {
+                    console.log('genero capturado', data);
+                    const generos = data.map(item => item.genero);
+                    const quantidades = data.map(item => item.quantidade);
+
+                    // Atualiza os dados do gráfico de pizza
+                    myPieChart.data.labels = generos;
+                    myPieChart.data.datasets[0].data = quantidades;
+
+                    // Atualiza o gráfico
+                    myPieChart.update();
+                })
+                .catch(function (resposta) {
+                    console.log(`#ERRO: ${resposta}`);
+                });
+
+        }
+
+
+
+        function dadosQuiz() {
+            const userId = sessionStorage.getItem('ID_USUARIO');
+            if (!userId) {
+                console.error('Usuário não está logado');
+                return;
+            }
+
+            fetch(`/usuarios/dadosQuiz/${userId}`, {
+                method: "GET",
+                headers: {
+                    "Content-Type": "application/json",
+                }
+            })
+                .then(function (resposta) {
+                    if (resposta.ok) {
+                        return resposta.json();
+                    } else {
+                        throw "Houve um erro ao tentar realizar a captura do quiz";
+                    }
+                })
+                .then(function (data) {
+                    console.log('quiz capturado', data);
+                    const acertos = data[0].acertos; // Ajuste aqui para acessar o campo correto
+                    const erros = 10 - acertos;
+
+                    // Atualiza os dados do gráfico de barras
+                    myBarChart.data.labels = ['Erros', 'Acertos'];
+                    myBarChart.data.datasets[0].data = [erros, acertos];
+
+                    // Atualiza o gráfico
+                    myBarChart.update();
+                })
+
+                
+        }
+
+
+        // Chama as funções para buscar dados
+        dadosGenero();
+        dadosQuiz();
+       
+
+    </script>
+
 </body>
+
 </html>
-
-
-
-<script>
-
-</script>
